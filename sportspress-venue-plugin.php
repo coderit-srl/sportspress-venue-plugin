@@ -37,9 +37,9 @@ function get_item( $request ) {
 	$id        = $params['id'];
 	$term_meta = get_option( "taxonomy_$id" );
 	if ( is_array( $term_meta ) ) {
-		$latitude  = sp_array_value( $term_meta, 'sp_latitude', '-37.8165647' );
-		$longitude = sp_array_value( $term_meta, 'sp_longitude', '144.9475055' );
-		$address   = sp_array_value( $term_meta, 'sp_address', '' );
+		$latitude  = spvp_array_value( $term_meta, 'sp_latitude', '-37.8165647' );
+		$longitude = spvp_array_value( $term_meta, 'sp_longitude', '144.9475055' );
+		$address   = spvp_array_value( $term_meta, 'sp_address', '' );
 		$data      = array( 'lat' => $latitude, 'lng' => $longitude, 'address' => $address );
 
 		return new WP_REST_Response( $data, 200 );
@@ -49,6 +49,6 @@ function get_item( $request ) {
 }
 
 
-function sp_array_value( $arr = array(), $key = 0, $default = null ) {
+function spvp_array_value( $arr = array(), $key = 0, $default = null ) {
 	return ( isset( $arr[ $key ] ) ? $arr[ $key ] : $default );
 }
