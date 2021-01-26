@@ -40,7 +40,7 @@ function get_item( $request ) {
 		$latitude  = spvp_array_value( $term_meta, 'sp_latitude', '-37.8165647' );
 		$longitude = spvp_array_value( $term_meta, 'sp_longitude', '144.9475055' );
 		$address   = spvp_array_value( $term_meta, 'sp_address', '' );
-		$data      = array( 'lat' => $latitude, 'lng' => $longitude, 'address' => $address );
+		$data      = array( 'id' => $id, 'lat' => $latitude, 'lng' => $longitude, 'address' => $address );
 
 		return new WP_REST_Response( $data, 200 );
 	} else {
