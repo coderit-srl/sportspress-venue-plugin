@@ -4,7 +4,7 @@
 Plugin Name: SportsPress Venue REST API
 Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
 Description: A simple plugin to get SportsPress Venue data via REST API
-Version: 1.0
+Version: 1.1
 Author: CODERIT srl
 Author URI: https://coderit.it
 License: BSD-3-Clause
@@ -21,7 +21,18 @@ add_action( 'rest_api_init', function () {
 				}
 			),
 		),
-	) );
+	));
+	register_rest_route( 'sportspress-venue/v1', '/elementor/(?P<id>\d+)', array(
+		'methods'  => 'GET',
+		'callback' => 'get_elementor',
+		'args'     => array(
+			'id' => array(
+				'validate_callback' => function ( $param, $request, $key ) {
+					return is_numeric( $param );
+				}
+			),
+		),
+	));
 } );
 
 /**
@@ -43,6 +54,18 @@ function get_item( $request ) {
 		$data      = array( 'id' => $id, 'lat' => $latitude, 'lng' => $longitude, 'address' => $address );
 
 		return new WP_REST_Response( $data, 200 );
+	} else {
+		return new WP_Error( 404, 'Not found', array( 'id' => $id ) );
+	}
+}
+
+function get_elementor( $request ) {
+	//get parameters from request
+	$params    = $request->get_params();
+	$id        = $params['id'];
+	if ( $id ) {
+		$data      = get_post_meta($id, '_elementor_data', true);
+		return new WP_REST_Response( array('id' => $id, 'data'=> json_decode($data)), 200 );
 	} else {
 		return new WP_Error( 404, 'Not found', array( 'id' => $id ) );
 	}
